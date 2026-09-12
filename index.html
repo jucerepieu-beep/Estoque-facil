@@ -1,54 +1,661 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Estoque Fácil — controle de estoque e vendas</title>
 <style>
 :root{--bg:#f5f7fb;--card:#fff;--ink:#182230;--muted:#6c7888;--line:#e5e9f0;--brand:#2563eb;--brand2:#1d4ed8;--ok:#0f9d70;--warn:#d97706;--danger:#dc2626;--shadow:0 8px 24px #1725540d}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px system-ui,-apple-system,Segoe UI,Roboto,sans-serif}button,input,select{font:inherit}button{border:0;cursor:pointer;border-radius:10px;padding:10px 14px;font-weight:650}.primary{color:white;background:var(--brand)}.primary:hover{background:var(--brand2)}.ghost{background:#eef3ff;color:var(--brand)}.danger{background:#fee2e2;color:#b91c1c}.top{height:68px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:5}.logo{font-weight:800;font-size:19px;display:flex;align-items:center;gap:9px}.logo i{font-style:normal;background:#dbeafe;border-radius:10px;padding:7px}.top small{color:var(--muted)}.layout{display:flex;min-height:calc(100vh - 68px)}aside{width:220px;padding:20px 12px;background:#fff;border-right:1px solid var(--line)}.nav{display:flex;gap:10px;align-items:center;width:100%;background:transparent;text-align:left;color:#586579;margin:4px 0}.nav.active{background:#eaf1ff;color:var(--brand)}main{max-width:1250px;width:100%;padding:28px;margin:auto}.page{display:none}.page.active{display:block}.heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}.heading h1{font-size:26px;margin:0}.heading p{margin:5px 0 0;color:var(--muted)}.actions{display:flex;gap:10px;flex-wrap:wrap}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}.card{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:18px}.stat b{display:block;font-size:27px;margin:9px 0 4px}.stat span{color:var(--muted);font-size:13px}.stat .ico{float:right;font-size:22px}.two{display:grid;grid-template-columns:1.35fr 1fr;gap:16px;margin-top:16px}.card h3{margin:0 0 15px;font-size:16px}.tablewrap{overflow:auto}.table{width:100%;border-collapse:collapse}.table th,.table td{text-align:left;padding:12px 10px;border-bottom:1px solid var(--line);white-space:nowrap}.table th{color:var(--muted);font-size:12px;text-transform:uppercase}.badge{border-radius:99px;padding:4px 9px;font-size:12px;font-weight:700}.low{background:#fff3d6;color:#a35b00}.ok{background:#dff8ee;color:#087451}.empty{text-align:center;color:var(--muted);padding:30px}.toolbar{display:flex;gap:10px;margin-bottom:15px;flex-wrap:wrap}.search{min-width:240px;flex:1;padding:11px 13px;border:1px solid var(--line);border-radius:10px;background:#fff}.modalbg{display:none;position:fixed;inset:0;background:#11182766;z-index:20;align-items:center;justify-content:center;padding:15px}.modalbg.open{display:flex}.modal{background:#fff;width:min(600px,100%);max-height:94vh;overflow:auto;border-radius:16px;padding:22px}.modalhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.modalhead h2{margin:0}.close{background:#f1f5f9;padding:6px 10px}.form{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field{display:flex;flex-direction:column;gap:6px}.field.full{grid-column:1/-1}.field label{font-size:13px;color:var(--muted);font-weight:650}.field input,.field select{padding:11px;border:1px solid #dce2eb;border-radius:9px;width:100%}.modalfoot{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}.scanner{background:#111827;border-radius:12px;color:#fff;padding:20px;text-align:center;margin-bottom:15px}.scanner video{width:100%;max-height:230px;object-fit:cover;border-radius:8px;background:#000;display:none}.scanner .scanline{height:2px;background:#60a5fa;margin:18px 12%;box-shadow:0 0 14px #60a5fa}.pos{display:grid;grid-template-columns:1.3fr .8fr;gap:18px}.productcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}.pitem{padding:14px;border:1px solid var(--line);border-radius:12px;background:white;cursor:pointer}.pitem:hover{border-color:var(--brand);box-shadow:var(--shadow)}.pitem strong{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.pitem small{display:block;color:var(--muted);margin:5px 0}.pitem b{color:var(--brand)}.cartrow{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding:12px 0;gap:8px}.qty{display:flex;align-items:center;gap:7px}.qty button{padding:4px 8px;background:#eef2f7}.total{font-size:23px;font-weight:800;display:flex;justify-content:space-between;margin-top:18px}.hint{color:var(--muted);font-size:13px;margin-top:7px}.toast{position:fixed;bottom:22px;right:22px;background:#172230;color:#fff;padding:13px 17px;border-radius:10px;display:none;z-index:30}.toast.show{display:block}.filelabel{display:inline-block}
 @media(max-width:850px){aside{width:70px;padding:12px 8px}.nav span{display:none}.nav{justify-content:center;font-size:20px}.grid{grid-template-columns:repeat(2,1fr)}.two,.pos{grid-template-columns:1fr}main{padding:18px}.top{padding:0 14px}.top small{display:none}}
 @media(max-width:520px){.grid{grid-template-columns:1fr 1fr}.form{grid-template-columns:1fr}.heading{align-items:flex-start;gap:12px;flex-direction:column}.actions{width:100%}.actions button{flex:1}}
-</style></head>
+</style>
+</head>
 <body>
-<header class="top"><div class="logo"><i>▦</i> Estoque Fácil</div><small>Controle simples, automático e offline</small><button class="ghost" id="exportBtn">⇩ Backup</button></header>
-<div class="layout"><aside>
+
+<header class="top">
+<div class="logo"><i>▦</i> Estoque Fácil</div>
+<small>Controle simples, automático e offline</small>
+<button class="ghost" id="exportBtn">⇩ Backup</button>
+</header>
+
+<div class="layout">
+<aside>
 <button class="nav active" data-page="home">⌂ <span>Visão geral</span></button>
 <button class="nav" data-page="products">▤ <span>Produtos</span></button>
 <button class="nav" data-page="sales">▣ <span>Nova venda</span></button>
 <button class="nav" data-page="history">◷ <span>Histórico</span></button>
-</aside><main>
-<section id="home" class="page active"><div class="heading"><div><h1>Visão geral</h1><p>Acompanhe seu estoque em poucos segundos.</p></div><div class="actions"><button class="ghost" id="importBtn">⇧ Importar backup</button><button class="primary" id="newProduct">＋ Produto</button></div></div>
-<div class="grid"><div class="card stat"><span class="ico">📦</span><span>Produtos cadastrados</span><b id="statProducts">0</b><span>itens diferentes</span></div><div class="card stat"><span class="ico">⚠️</span><span>Estoque baixo</span><b id="statLow">0</b><span>precisam de atenção</span></div><div class="card stat"><span class="ico">💰</span><span>Vendas hoje</span><b id="statToday">R$ 0,00</b><span id="statSalesCount">0 vendas</span></div><div class="card stat"><span class="ico">📊</span><span>Valor em estoque</span><b id="statValue">R$ 0,00</b><span>pelo preço de custo</span></div></div>
-<div class="two"><div class="card"><h3>⚠️ Reposição necessária</h3><div id="lowList"></div></div><div class="card"><h3>🧾 Últimas vendas</h3><div id="recentList"></div></div></div></section>
-<section id="products" class="page"><div class="heading"><div><h1>Produtos</h1><p>Cadastre por código de barras ou manualmente.</p></div><button class="primary" id="newProduct2">＋ Cadastrar produto</button></div><div class="toolbar"><input class="search" id="productSearch" placeholder="🔎 Buscar por nome, SKU ou código de barras..."><button class="ghost" id="scanRegister">▣ Ler código</button></div><div class="card tablewrap"><table class="table"><thead><tr><th>Produto</th><th>Código</th><th>Categoria</th><th>Estoque</th><th>Venda</th><th></th></tr></thead><tbody id="productTable"></tbody></table></div></section>
-<section id="sales" class="page"><div class="heading"><div><h1>Nova venda</h1><p>Leia o código, clique no produto ou pesquise.</p></div></div><div class="pos"><div><div class="card"><div class="toolbar"><input class="search" id="saleSearch" placeholder="🔎 Buscar produto ou código..."><button class="primary" id="scanSale">▣ Escanear</button></div><div id="saleProducts" class="productcards"></div></div></div><div class="card"><h3>🛒 Carrinho</h3><div id="cart"></div><div class="total"><span>Total</span><span id="cartTotal">R$ 0,00</span></div><button class="primary" style="width:100%;margin-top:15px" id="finishSale">Finalizar venda</button></div></div></section>
-<section id="history" class="page"><div class="heading"><div><h1>Histórico de vendas</h1><p>Registro das vendas realizadas neste dispositivo.</p></div></div><div class="card tablewrap"><table class="table"><thead><tr><th>Data</th><th>Itens</th><th>Total</th></tr></thead><tbody id="historyTable"></tbody></table></div></section>
-</main></div>
-<div class="modalbg" id="productModal"><div class="modal"><div class="modalhead"><h2 id="modalTitle">Cadastrar produto</h2><button class="close" data-close>✕</button></div><form id="productForm"><input type="hidden" id="editId"><div class="form"><div class="field full"><label>Nome do produto *</label><input id="fName" required placeholder="Ex.: Café 500g"></div><div class="field"><label>Código de barras / SKU *</label><div style="display:flex;gap:6px"><input id="fBarcode" required placeholder="Bipe ou digite" style="flex:1"><button type="button" class="ghost" id="scanModal">▣</button></div></div><div class="field"><label>Categoria</label><input id="fCategory" placeholder="Ex.: Bebidas"></div><div class="field"><label>Quantidade atual *</label><input id="fStock" type="number" min="0" required value="0"></div><div class="field"><label>Estoque mínimo</label><input id="fMin" type="number" min="0" value="2"></div><div class="field"><label>Preço de custo (R$)</label><input id="fCost" type="number" min="0" step="0.01" value="0"></div><div class="field"><label>Preço de venda (R$) *</label><input id="fPrice" type="number" min="0" step="0.01" required value="0"></div></div><div class="modalfoot"><button type="button" class="ghost" data-close>Cancelar</button><button class="primary">Salvar produto</button></div></form></div></div>
-<div class="modalbg" id="scannerModal"><div class="modal"><div class="modalhead"><h2>Leitor de código</h2><button class="close" data-close>✕</button></div><div class="scanner"><video id="video" playsinline></video><div class="scanline"></div><p id="scanStatus">Aponte a câmera para o código de barras.</p></div><div class="field"><label>Se a câmera não funcionar, digite o código:</label><input id="manualCode" inputmode="numeric" placeholder="Código de barras"><button class="primary" id="useCode" style="margin-top:8px">Usar código</button></div></div></div>
-<div class="toast" id="toast"></div><input type="file" id="importFile" accept=".json" hidden>
+<button class="nav" data-page="reports">▥ <span>Relatórios</span></button>
+</aside>
+
+<main>
+
+<section id="home" class="page active">
+<div class="heading">
+<div>
+<h1>Visão geral</h1>
+<p>Acompanhe seu estoque em poucos segundos.</p>
+</div>
+<div class="actions">
+<button class="ghost" id="importBtn">⇧ Importar backup</button>
+<button class="primary" id="newProduct">＋ Produto</button>
+</div>
+</div>
+
+<div class="grid">
+<div class="card stat"><span class="ico">📦</span><span>Produtos cadastrados</span><b id="statProducts">0</b><span>itens diferentes</span></div>
+<div class="card stat"><span class="ico">⚠️</span><span>Estoque baixo</span><b id="statLow">0</b><span>precisam de atenção</span></div>
+<div class="card stat"><span class="ico">💰</span><span>Vendas hoje</span><b id="statToday">R$ 0,00</b><span id="statSalesCount">0 vendas</span></div>
+<div class="card stat"><span class="ico">📊</span><span>Valor em estoque</span><b id="statValue">R$ 0,00</b><span>pelo preço de custo</span></div>
+</div>
+
+<div class="two">
+<div class="card"><h3>⚠️ Reposição necessária</h3><div id="lowList"></div></div>
+<div class="card"><h3>🧾 Últimas vendas</h3><div id="recentList"></div></div>
+</div>
+</section>
+
+<section id="products" class="page">
+<div class="heading">
+<div>
+<h1>Produtos</h1>
+<p>Cadastre por código de barras ou manualmente.</p>
+</div>
+<button class="primary" id="newProduct2">＋ Cadastrar produto</button>
+</div>
+
+<div class="toolbar">
+<input class="search" id="productSearch" placeholder="🔎 Buscar por nome, SKU ou código de barras...">
+<button class="ghost" id="scanRegister">▣ Ler código</button>
+</div>
+
+<div class="card tablewrap">
+<table class="table">
+<thead>
+<tr><th>Produto</th><th>Código</th><th>Categoria</th><th>Estoque</th><th>Venda</th><th></th></tr>
+</thead>
+<tbody id="productTable"></tbody>
+</table>
+</div>
+</section>
+
+<section id="sales" class="page">
+<div class="heading">
+<div>
+<h1>Nova venda</h1>
+<p>Leia o código, clique no produto ou pesquise.</p>
+</div>
+</div>
+
+<div class="pos">
+<div>
+<div class="card">
+<div class="toolbar">
+<input class="search" id="saleSearch" placeholder="🔎 Buscar produto ou código...">
+<button class="primary" id="scanSale">▣ Escanear</button>
+</div>
+<div id="saleProducts" class="productcards"></div>
+</div>
+</div>
+
+<div class="card">
+<h3>🛒 Carrinho</h3>
+<div id="cart"></div>
+<div class="total"><span>Total</span><span id="cartTotal">R$ 0,00</span></div>
+<button class="primary" style="width:100%;margin-top:15px" id="finishSale">Finalizar venda</button>
+</div>
+</div>
+</section>
+
+<section id="history" class="page">
+<div class="heading">
+<div>
+<h1>Histórico de vendas</h1>
+<p>Registro das vendas realizadas neste dispositivo.</p>
+</div>
+</div>
+
+<div class="card tablewrap">
+<table class="table">
+<thead>
+<tr><th>Data</th><th>Itens</th><th>Total</th><th>Ações</th></tr>
+</thead>
+<tbody id="historyTable"></tbody>
+</table>
+</div>
+</section>
+
+<section id="reports" class="page">
+<div class="heading">
+<div>
+<h1>Relatórios</h1>
+<p>Controle de estoque e vendas por período.</p>
+</div>
+<div class="actions">
+<button class="ghost" id="printStockReport">🖨 Estoque em PDF</button>
+<button class="primary" id="printSalesReport">🖨 Vendas em PDF</button>
+</div>
+</div>
+
+<div class="card" style="margin-bottom:16px">
+<div class="toolbar">
+<label style="display:flex;align-items:center;gap:8px">
+Dia das vendas
+<input type="date" id="reportDate" class="search" style="flex:0 1 180px">
+</label>
+<button class="ghost" id="todayReport">Hoje</button>
+</div>
+<div id="reportSummary"></div>
+</div>
+
+<div class="two">
+<div class="card">
+<h3>📦 Relatório de estoque</h3>
+<div class="tablewrap">
+<table class="table">
+<thead>
+<tr><th>Produto</th><th>Código</th><th>Estoque</th><th>Mínimo</th><th>Valor custo</th></tr>
+</thead>
+<tbody id="stockReport"></tbody>
+</table>
+</div>
+</div>
+
+<div class="card">
+<h3>💰 Vendas do dia</h3>
+<div class="tablewrap">
+<table class="table">
+<thead>
+<tr><th>Hora</th><th>Itens</th><th>Total</th></tr>
+</thead>
+<tbody id="salesReport"></tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+
+</main>
+</div>
+
+<div class="modalbg" id="productModal">
+<div class="modal">
+<div class="modalhead">
+<h2 id="modalTitle">Cadastrar produto</h2>
+<button class="close" data-close>✕</button>
+</div>
+
+<form id="productForm">
+<input type="hidden" id="editId">
+
+<div class="form">
+<div class="field full">
+<label>Nome do produto *</label>
+<input id="fName" required placeholder="Ex.: Café 500g">
+</div>
+
+<div class="field">
+<label>Código de barras / SKU <small>(opcional)</small></label>
+<div style="display:flex;gap:6px">
+<input id="fBarcode" placeholder="Deixe vazio para gerar um código interno" style="flex:1">
+<button type="button" class="ghost" id="scanModal">▣</button>
+</div>
+</div>
+
+<div class="field">
+<label>Categoria</label>
+<input id="fCategory" placeholder="Ex.: Bebidas">
+</div>
+
+<div class="field">
+<label>Quantidade atual *</label>
+<input id="fStock" type="number" min="0" required value="0">
+</div>
+
+<div class="field">
+<label>Estoque mínimo</label>
+<input id="fMin" type="number" min="0" value="2">
+</div>
+
+<div class="field">
+<label>Preço de custo (R$)</label>
+<input id="fCost" type="number" min="0" step="0.01" value="0">
+</div>
+
+<div class="field">
+<label>Preço de venda (R$) *</label>
+<input id="fPrice" type="number" min="0" step="0.01" required value="0">
+</div>
+</div>
+
+<div class="modalfoot">
+<button type="button" class="ghost" data-close>Cancelar</button>
+<button class="primary">Salvar produto</button>
+</div>
+</form>
+</div>
+</div>
+
+<div class="modalbg" id="scannerModal">
+<div class="modal">
+<div class="modalhead">
+<h2>Leitor de código</h2>
+<button class="close" data-close>✕</button>
+</div>
+
+<div class="scanner">
+<video id="video" playsinline></video>
+<div class="scanline"></div>
+<p id="scanStatus">Aponte a câmera para o código de barras.</p>
+</div>
+
+<div class="field">
+<label>Se a câmera não funcionar, digite o código:</label>
+<input id="manualCode" inputmode="numeric" placeholder="Código de barras">
+<button class="primary" id="useCode" style="margin-top:8px">Usar código</button>
+</div>
+</div>
+</div>
+
+<div class="toast" id="toast"></div>
+<input type="file" id="importFile" accept=".json" hidden>
+
 <script>
-const $=s=>document.querySelector(s), $$=s=>document.querySelectorAll(s); const money=n=>(Number(n)||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'}); const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
-let data=JSON.parse(localStorage.getItem('estoque_facil')||'null')||{products:[],sales:[]},cart=[];
-function save(){localStorage.setItem('estoque_facil',JSON.stringify(data));renderAll()} function toast(t){let x=$('#toast');x.textContent=t;x.classList.add('show');setTimeout(()=>x.classList.remove('show'),2500)}
-function nav(page){$$('.page').forEach(x=>x.classList.toggle('active',x.id===page));$$('.nav').forEach(x=>x.classList.toggle('active',x.dataset.page===page));if(page==='sales')renderSaleProducts()}
-$$('.nav').forEach(b=>b.onclick=()=>nav(b.dataset.page));
-function renderAll(){renderDashboard();renderProducts();renderHistory();if($('#sales').classList.contains('active'))renderSaleProducts()}
-function renderDashboard(){let ps=data.products, low=ps.filter(p=>p.stock<=p.min), today=new Date().toDateString(), sales=data.sales.filter(s=>new Date(s.date).toDateString()===today);$('#statProducts').textContent=ps.length;$('#statLow').textContent=low.length;$('#statToday').textContent=money(sales.reduce((a,s)=>a+s.total,0));$('#statSalesCount').textContent=sales.length+' venda'+(sales.length===1?'':'s');$('#statValue').textContent=money(ps.reduce((a,p)=>a+p.stock*p.cost,0));$('#lowList').innerHTML=low.length?low.slice(0,6).map(p=>`<div class="cartrow"><span><b>${esc(p.name)}</b><br><small>${p.stock} em estoque · mínimo ${p.min}</small></span><span class="badge low">Repor</span></div>`).join(''):'<div class="empty">Tudo certo! Nenhum produto abaixo do mínimo.</div>';let recent=data.sales.slice(-5).reverse();$('#recentList').innerHTML=recent.length?recent.map(s=>`<div class="cartrow"><span>${new Date(s.date).toLocaleString('pt-BR')}<br><small>${s.items.reduce((a,i)=>a+i.qty,0)} item(ns)</small></span><b>${money(s.total)}</b></div>`).join(''):'<div class="empty">Nenhuma venda registrada.</div>'}
-function renderProducts(){let q=($('#productSearch')?.value||'').toLowerCase(), ps=data.products.filter(p=>(p.name+p.barcode+p.category).toLowerCase().includes(q));$('#productTable').innerHTML=ps.length?ps.map(p=>`<tr><td><b>${esc(p.name)}</b></td><td>${esc(p.barcode)}</td><td>${esc(p.category||'—')}</td><td><span class="badge ${p.stock<=p.min?'low':'ok'}">${p.stock} un.</span></td><td>${money(p.price)}</td><td><button class="ghost" onclick="editProduct('${p.id}')">Editar</button> <button class="danger" onclick="removeProduct('${p.id}')">Excluir</button></td></tr>`).join(''):'<tr><td colspan="6" class="empty">Nenhum produto encontrado. Cadastre o primeiro!</td></tr>'}
-function renderHistory(){$('#historyTable').innerHTML=data.sales.length?data.sales.slice().reverse().map(s=>`<tr><td>${new Date(s.date).toLocaleString('pt-BR')}</td><td>${s.items.map(i=>`${esc(i.name)} (${i.qty})`).join(', ')}</td><td><b>${money(s.total)}</b></td></tr>`).join(''):'<tr><td colspan="3" class="empty">Nenhuma venda realizada.</td></tr>'}
-function renderSaleProducts(){let q=($('#saleSearch')?.value||'').toLowerCase(),ps=data.products.filter(p=>p.stock>0&&(p.name+p.barcode).toLowerCase().includes(q));$('#saleProducts').innerHTML=ps.length?ps.map(p=>`<div class="pitem" onclick="addCart('${p.id}')"><strong>${esc(p.name)}</strong><small>${esc(p.barcode)} · ${p.stock} disponíveis</small><b>${money(p.price)}</b></div>`).join(''):'<div class="empty">Nenhum produto disponível.</div>';renderCart()}
-function addCart(id){let p=data.products.find(x=>x.id===id),c=cart.find(x=>x.id===id);if(!p)return;if(c){if(c.qty>=p.stock)return toast('Quantidade maior que o estoque disponível.');c.qty++}else cart.push({id,qty:1});renderCart()}
-function changeQty(id,d){let c=cart.find(x=>x.id===id),p=data.products.find(x=>x.id===id);if(!c)return;c.qty+=d;if(c.qty<=0)cart=cart.filter(x=>x.id!==id);if(p&&c.qty>p.stock)c.qty=p.stock;renderCart()}
-function renderCart(){let el=$('#cart');el.innerHTML=cart.length?cart.map(c=>{let p=data.products.find(x=>x.id===c.id);return `<div class="cartrow"><span><b>${esc(p.name)}</b><br><small>${money(p.price)} cada</small></span><span class="qty"><button onclick="changeQty('${p.id}',-1)">−</button>${c.qty}<button onclick="changeQty('${p.id}',1)">＋</button></span><b>${money(p.price*c.qty)}</b></div>`}).join(''):'<div class="empty">Seu carrinho está vazio.<br>Clique em um produto ou leia um código.</div>';$('#cartTotal').textContent=money(cart.reduce((a,c)=>{let p=data.products.find(x=>x.id===c.id);return a+p.price*c.qty},0))}
-function openProduct(p){$('#productModal').classList.add('open');$('#modalTitle').textContent=p?'Editar produto':'Cadastrar produto';$('#editId').value=p?.id||'';$('#fName').value=p?.name||'';$('#fBarcode').value=p?.barcode||'';$('#fCategory').value=p?.category||'';$('#fStock').value=p?.stock??0;$('#fMin').value=p?.min??2;$('#fCost').value=p?.cost??0;$('#fPrice').value=p?.price??0}
-function editProduct(id){openProduct(data.products.find(p=>p.id===id))} function removeProduct(id){if(confirm('Excluir este produto?')){data.products=data.products.filter(p=>p.id!==id);save();toast('Produto excluído')}}
-$('#productForm').onsubmit=e=>{e.preventDefault();let id=$('#editId').value,p={id:id||uid(),name:$('#fName').value.trim(),barcode:$('#fBarcode').value.trim(),category:$('#fCategory').value.trim(),stock:+$('#fStock').value,min:+$('#fMin').value,cost:+$('#fCost').value,price:+$('#fPrice').value};let duplicate=data.products.find(x=>x.barcode===p.barcode&&x.id!==p.id);if(duplicate)return toast('Já existe um produto com este código.');if(id)data.products=data.products.map(x=>x.id===id?p:x);else data.products.push(p);save();$('#productModal').classList.remove('open');toast(id?'Produto atualizado!':'Produto cadastrado!')};
-$('#finishSale').onclick=()=>{if(!cart.length)return toast('Adicione pelo menos um produto.');let items=cart.map(c=>{let p=data.products.find(x=>x.id===c.id);return{id:p.id,name:p.name,qty:c.qty,price:p.price}}),total=items.reduce((a,i)=>a+i.qty*i.price,0);items.forEach(i=>{let p=data.products.find(x=>x.id===i.id);p.stock-=i.qty});data.sales.push({id:uid(),date:new Date().toISOString(),items,total});cart=[];save();toast('Venda finalizada e estoque atualizado!')};
-function esc(s){return String(s??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
-$$('[data-close]').forEach(b=>b.onclick=()=>b.closest('.modalbg').classList.remove('open'));$('#newProduct').onclick=()=>openProduct();$('#newProduct2').onclick=()=>openProduct();$('#productSearch').oninput=renderProducts;$('#saleSearch').oninput=renderSaleProducts;
-$('#exportBtn').onclick=()=>{let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));a.download='backup-estoque-'+new Date().toISOString().slice(0,10)+'.json';a.click();toast('Backup baixado!')};$('#importBtn').onclick=()=>$('#importFile').click();$('#importFile').onchange=e=>{let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let x=JSON.parse(r.result);if(!Array.isArray(x.products)||!Array.isArray(x.sales))throw 0;if(confirm('Substituir os dados atuais pelo backup?')){data=x;save();toast('Backup importado!')}}catch{toast('Arquivo de backup inválido.')}};r.readAsText(f)};
-let scanTarget='';let stream=null;async function openScanner(target){scanTarget=target;$('#scannerModal').classList.add('open');$('#scanStatus').textContent='Aponte a câmera para o código de barras.';$('#video').style.display='block';try{stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}}});let v=$('#video');v.srcObject=stream;await v.play();if('BarcodeDetector' in window){let detector=new BarcodeDetector({formats:['ean_13','ean_8','code_128','upc_a','upc_e','qr_code']});let tick=async()=>{if(!$('#scannerModal').classList.contains('open'))return;try{let codes=await detector.detect(v);if(codes[0]){useScanned(codes[0].rawValue);return}}catch{}requestAnimationFrame(tick)};tick()}else $('#scanStatus').textContent='Seu navegador não detecta automaticamente. Digite o código abaixo.'}catch{$('#scanStatus').textContent='Não foi possível abrir a câmera. Digite o código abaixo.'}}
-function useScanned(code){if(stream)stream.getTracks().forEach(t=>t.stop());$('#scannerModal').classList.remove('open');if(scanTarget==='register'){nav('products');openProduct();$('#fBarcode').value=code;$('#fName').focus();toast('Código lido! Complete o cadastro.')}else{let p=data.products.find(p=>p.barcode===code);if(p){addCart(p.id);nav('sales');toast('Produto adicionado ao carrinho!')}else{nav('products');openProduct();$('#fBarcode').value=code;toast('Código novo. Cadastre o produto.')}}}
-$('#useCode').onclick=()=>{let c=$('#manualCode').value.trim();if(c)useScanned(c)};$('#scanRegister').onclick=()=>openScanner('register');$('#scanSale').onclick=()=>openScanner('sale');$('#scanModal').onclick=()=>openScanner('register');
+const $=s=>document.querySelector(s),
+\[=s=>document.querySelectorAll(s);
+
+const money=n=>(Number(n)||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+
+let data=JSON.parse(localStorage.getItem('estoque_facil')||'null')||{products:[],sales:[]},
+cart=[];
+
+function save(){
+localStorage.setItem('estoque_facil',JSON.stringify(data));
+renderAll()
+}
+
+function toast(t){
+let x=$('#toast');
+x.textContent=t;
+x.classList.add('show');
+setTimeout(()=>x.classList.remove('show'),2500)
+}
+
+function nav(page){
+\]('.page').forEach(x=>x.classList.toggle('active',x.id===page));
+\[('.nav').forEach(x=>x.classList.toggle('active',x.dataset.page===page));
+if(page==='sales')renderSaleProducts();
+if(page==='reports')renderReports()
+}
+
+\]('.nav').forEach(b=>b.onclick=()=>nav(b.dataset.page));
+
+function renderAll(){
+renderDashboard();
+renderProducts();
+renderHistory();
+renderReports();
+if($('#sales').classList.contains('active'))renderSaleProducts()
+}
+
+function renderDashboard(){
+let ps=data.products,
+low=ps.filter(p=>p.stock<=p.min),
+today=new Date().toDateString(),
+sales=data.sales.filter(s=>new Date(s.date).toDateString()===today);
+
+$('#statProducts').textContent=ps.length;
+$('#statLow').textContent=low.length;
+$('#statToday').textContent=money(sales.reduce((a,s)=>a+s.total,0));
+$('#statSalesCount').textContent=sales.length+' venda'+(sales.length===1?'':'s');
+$('#statValue').textContent=money(ps.reduce((a,p)=>a+p.stock*p.cost,0));
+
+$('#lowList').innerHTML=low.length
+?low.slice(0,6).map(p=>`<div class="cartrow"><span><b>\({esc(p.name)}</b><br><small>\){p.stock} em estoque · mínimo ${p.min}</small></span><span class="badge low">Repor</span></div>`).join('')
+:'<div class="empty">Tudo certo! Nenhum produto abaixo do mínimo.</div>';
+
+let recent=data.sales.slice(-5).reverse();
+
+$('#recentList').innerHTML=recent.length
+?recent.map(s=>`<div class="cartrow"><span>\({new Date(s.date).toLocaleString('pt-BR')}<br><small>\){s.items.reduce((a,i)=>a+i.qty,0)} item(ns)</small></span><b>${money(s.total)}</b></div>`).join('')
+:'<div class="empty">Nenhuma venda registrada.</div>'
+}
+
+function renderProducts(){
+let q=($('#productSearch')?.value||'').toLowerCase(),
+ps=data.products.filter(p=>(p.name+p.barcode+p.category).toLowerCase().includes(q));
+
+$('#productTable').innerHTML=ps.length
+?ps.map(p=>`<tr><td><b>\({esc(p.name)}</b></td><td>\){esc(p.barcode)}</td><td>\({esc(p.category||'—')}</td><td><span class="badge \){p.stock<=p.min?'low':'ok'}">\({p.stock} un.</span></td><td>\){money(p.price)}</td><td><button class="ghost" onclick="editProduct('\({p.id}')">Editar</button> <button class="danger" onclick="removeProduct('\){p.id}')">Excluir</button></td></tr>`).join('')
+:'<tr><td colspan="6" class="empty">Nenhum produto encontrado. Cadastre o primeiro!</td></tr>'
+}
+
+function renderHistory(){
+$('#historyTable').innerHTML=data.sales.length
+?data.sales.slice().reverse().map(s=>`<tr><td>\({new Date(s.date).toLocaleString('pt-BR')}</td><td>\){s.items.map(i=>`\({esc(i.name)} (\){i.qty})`).join(', ')}</td><td><b>\({money(s.total)}</b></td><td><button class="ghost" onclick="printReceipt('\){s.id}')">🧾 Comprovante</button></td></tr>`).join('')
+:'<tr><td colspan="4" class="empty">Nenhuma venda realizada.</td></tr>'
+}
+
+function renderReports(){
+let d=$('#reportDate')?.value||new Date().toISOString().slice(0,10),
+ps=data.products,
+sales=data.sales.filter(s=>s.date.slice(0,10)===d),
+total=sales.reduce((a,s)=>a+s.total,0),
+units=sales.reduce((a,s)=>a+s.items.reduce((n,i)=>n+i.qty,0),0);
+
+\(('#reportSummary').innerHTML=`<b>\){sales.length}</b> venda(s) em \({d.split('-').reverse().join('/')} · <b>\){units}</b> item(ns) vendidos · <b>${money(total)}</b> em faturamento`;
+
+$('#stockReport').innerHTML=ps.length
+?ps.map(p=>`<tr><td><b>\({esc(p.name)}</b></td><td>\){esc(p.barcode)}</td><td><span class="badge \({p.stock<=p.min?'low':'ok'}">\){p.stock}</span></td><td>\({p.min}</td><td>\){money(p.stock*p.cost)}</td></tr>`).join('')
+:'<tr><td colspan="5" class="empty">Nenhum produto cadastrado.</td></tr>';
+
+$('#salesReport').innerHTML=sales.length
+?sales.map(s=>`<tr><td>\({new Date(s.date).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}</td><td>\){s.items.reduce((a,i)=>a+i.qty,0)}</td><td><b>${money(s.total)}</b></td></tr>`).join('')
+:'<tr><td colspan="3" class="empty">Nenhuma venda nesse dia.</td></tr>'
+}
+
+function printReport(type){
+let d=$('#reportDate').value||new Date().toISOString().slice(0,10),
+sales=data.sales.filter(s=>s.date.slice(0,10)===d),
+w=window.open('','_blank','width=800,height=800');
+
+if(!w)return toast('Permita pop-ups para gerar o PDF.');
+
+let title=type==='stock'?'Relatório de estoque':'Relatório de vendas';
+
+let content=type==='stock'
+?`<table><tr><th>Produto</th><th>Código</th><th>Estoque</th><th>Mínimo</th><th>Valor de custo</th></tr>\({data.products.map(p=>`<tr><td>\){esc(p.name)}</td><td>\({esc(p.barcode)}</td><td>\){p.stock}</td><td>\({p.min}</td><td>\){money(p.stock*p.cost)}</td></tr>`).join('')}</table>`
+:`<p>Data: \({d.split('-').reverse().join('/')} · Vendas: \){sales.length} · Total: \({money(sales.reduce((a,s)=>a+s.total,0))}</p><table><tr><th>Data e hora</th><th>Itens</th><th>Total</th></tr>\){sales.map(s=>`<tr><td>\({new Date(s.date).toLocaleString('pt-BR')}</td><td>\){s.items.map(i=>esc(i.name)+' × '+i.qty).join(', ')}</td><td>${money(s.total)}</td></tr>`).join('')}</table>`;
+
+w.document.write(`<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>\({title}</title><style>body{font:14px Arial;margin:25px;color:#111}h1{text-align:center}table{width:100%;border-collapse:collapse;margin-top:18px}th,td{border:1px solid #bbb;padding:8px;text-align:left}th{background:#eee}.noPrint{text-align:center;margin:25px}@media print{.noPrint{display:none}}</style></head><body><h1>\){title}</h1><p>Gerado em: \({new Date().toLocaleString('pt-BR')}</p>\){content}<div class="noPrint"><button onclick="window.print()">Imprimir / Salvar em PDF</button></div></body></html>`);
+w.document.close()
+}
+
+function renderSaleProducts(){
+let q=($('#saleSearch')?.value||'').toLowerCase(),
+ps=data.products.filter(p=>p.stock>0&&(p.name+p.barcode).toLowerCase().includes(q));
+
+$('#saleProducts').innerHTML=ps.length
+?ps.map(p=>`<div class="pitem" onclick="addCart('\({p.id}')"><strong>\){esc(p.name)}</strong><small>\({esc(p.barcode)} · \){p.stock} disponíveis</small><b>${money(p.price)}</b></div>`).join('')
+:'<div class="empty">Nenhum produto disponível.</div>';
+
+renderCart()
+}
+
+function addCart(id){
+let p=data.products.find(x=>x.id===id),
+c=cart.find(x=>x.id===id);
+
+if(!p)return;
+
+if(c){
+if(c.qty>=p.stock)return toast('Quantidade maior que o estoque disponível.');
+c.qty++
+}else cart.push({id,qty:1});
+
+renderCart()
+}
+
+function changeQty(id,d){
+let c=cart.find(x=>x.id===id),
+p=data.products.find(x=>x.id===id);
+
+if(!c)return;
+
+c.qty+=d;
+
+if(c.qty<=0)cart=cart.filter(x=>x.id!==id);
+if(p&&c.qty>p.stock)c.qty=p.stock;
+
+renderCart()
+}
+
+function renderCart(){
+let el=$('#cart');
+
+el.innerHTML=cart.length
+?cart.map(c=>{
+let p=data.products.find(x=>x.id===c.id);
+return `<div class="cartrow"><span><b>\({esc(p.name)}</b><br><small>\){money(p.price)} cada</small></span><span class="qty"><button onclick="changeQty('\({p.id}',-1)">−</button>\){c.qty}<button onclick="changeQty('\({p.id}',1)">＋</button></span><b>\){money(p.price*c.qty)}</b></div>`
+}).join('')
+:'<div class="empty">Seu carrinho está vazio.<br>Clique em um produto ou leia um código.</div>';
+
+$('#cartTotal').textContent=money(cart.reduce((a,c)=>{
+let p=data.products.find(x=>x.id===c.id);
+return a+p.price*c.qty
+},0))
+}
+
+function openProduct(p){
+$('#productModal').classList.add('open');
+$('#modalTitle').textContent=p?'Editar produto':'Cadastrar produto';
+$('#editId').value=p?.id||'';
+$('#fName').value=p?.name||'';
+$('#fBarcode').value=p?.barcode||'';
+$('#fCategory').value=p?.category||'';
+$('#fStock').value=p?.stock??0;
+$('#fMin').value=p?.min??2;
+$('#fCost').value=p?.cost??0;
+$('#fPrice').value=p?.price??0
+}
+
+function editProduct(id){
+openProduct(data.products.find(p=>p.id===id))
+}
+
+function removeProduct(id){
+if(confirm('Excluir este produto?')){
+data.products=data.products.filter(p=>p.id!==id);
+save();
+toast('Produto excluído')
+}
+}
+
+$('#productForm').onsubmit=e=>{
+e.preventDefault();
+
+let id=$('#editId').value,
+p={
+id:id||uid(),
+name:$('#fName').value.trim(),
+barcode:$('#fBarcode').value.trim()||('INT-'+Date.now().toString().slice(-8)),
+category:$('#fCategory').value.trim(),
+stock:+$('#fStock').value,
+min:+$('#fMin').value,
+cost:+$('#fCost').value,
+price:+$('#fPrice').value
+};
+
+let duplicate=data.products.find(x=>x.barcode===p.barcode&&x.id!==p.id);
+
+if(duplicate)return toast('Já existe um produto com este código.');
+
+if(id)data.products=data.products.map(x=>x.id===id?p:x);
+else data.products.push(p);
+
+save();
+$('#productModal').classList.remove('open');
+toast(id?'Produto atualizado!':'Produto cadastrado!')
+};
+
+$('#finishSale').onclick=()=>{
+if(!cart.length)return toast('Adicione pelo menos um produto.');
+
+let items=cart.map(c=>{
+let p=data.products.find(x=>x.id===c.id);
+return{id:p.id,name:p.name,qty:c.qty,price:p.price}
+}),
+total=items.reduce((a,i)=>a+i.qty*i.price,0);
+
+items.forEach(i=>{
+let p=data.products.find(x=>x.id===i.id);
+p.stock-=i.qty
+});
+
+data.sales.push({
+id:uid(),
+date:new Date().toISOString(),
+items,
+total
+});
+
+cart=[];
+save();
+toast('Venda finalizada e estoque atualizado!')
+};
+
+function printReceipt(id){
+let s=data.sales.find(x=>x.id===id);
+
+if(!s)return;
+
+let w=window.open('','_blank','width=420,height=700');
+
+if(!w)return toast('Permita pop-ups para imprimir o comprovante.');
+
+w.document.write(`<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>Comprovante de venda</title><style>body{font:14px Arial;margin:24px;color:#111}h2{text-align:center;margin:0 0 8px}.center{text-align:center;color:#555}.line{border-top:1px dashed #888;margin:16px 0}.row{display:flex;justify-content:space-between;margin:8px 0}.total{font-size:19px;font-weight:bold}.noPrint{text-align:center;margin-top:24px}@media print{.noPrint{display:none}}</style></head><body><h2>COMPROVANTE DE VENDA</h2><div class="center">Estoque Fácil<br>\({new Date(s.date).toLocaleString('pt-BR')}</div><div class="line">\){s.items.map(i=>`<div class="row"><span>\({esc(i.name)} × \){i.qty}</span><b>\({money(i.qty*i.price)}</b></div>`).join('')}</div><div class="row total"><span>TOTAL</span><span>\){money(s.total)}</span></div><p class="center">Obrigado pela preferência!</p><div class="noPrint"><button onclick="window.print()">Imprimir / Salvar em PDF</button></div></body></html>`);
+
+w.document.close()
+}
+
+function esc(s){
+return String(s??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))
+}
+
+\(\)('[data-close]').forEach(b=>b.onclick=()=>b.closest('.modalbg').classList.remove('open'));
+
+$('#newProduct').onclick=()=>openProduct();
+$('#newProduct2').onclick=()=>openProduct();
+$('#productSearch').oninput=renderProducts;
+$('#saleSearch').oninput=renderSaleProducts;
+
+$('#exportBtn').onclick=()=>{
+let a=document.createElement('a');
+a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));
+a.download='backup-estoque-'+new Date().toISOString().slice(0,10)+'.json';
+a.click();
+toast('Backup baixado!')
+};
+
+\(('#importBtn').onclick=()=>\)('#importFile').click();
+
+$('#importFile').onchange=e=>{
+let f=e.target.files[0];
+if(!f)return;
+
+let r=new FileReader();
+
+r.onload=()=>{
+try{
+let x=JSON.parse(r.result);
+
+if(!Array.isArray(x.products)||!Array.isArray(x.sales))throw 0;
+
+if(confirm('Substituir os dados atuais pelo backup?')){
+data=x;
+save();
+toast('Backup importado!')
+}
+}catch{
+toast('Arquivo de backup inválido.')
+}
+};
+
+r.readAsText(f)
+};
+
+let scanTarget='';
+let stream=null;
+
+async function openScanner(target){
+scanTarget=target;
+$('#scannerModal').classList.add('open');
+$('#scanStatus').textContent='Aponte a câmera para o código de barras.';
+$('#video').style.display='block';
+
+try{
+stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}}});
+
+let v=$('#video');
+v.srcObject=stream;
+await v.play();
+
+if('BarcodeDetector' in window){
+let detector=new BarcodeDetector({formats:['ean_13','ean_8','code_128','upc_a','upc_e','qr_code']});
+
+let tick=async()=>{
+if(!$('#scannerModal').classList.contains('open'))return;
+
+try{
+let codes=await detector.detect(v);
+
+if(codes[0]){
+useScanned(codes[0].rawValue);
+return
+}
+}catch{}
+
+requestAnimationFrame(tick)
+};
+
+tick()
+}else{
+$('#scanStatus').textContent='Seu navegador não detecta automaticamente. Digite o código abaixo.'
+}
+}catch{
+$('#scanStatus').textContent='Não foi possível abrir a câmera. Digite o código abaixo.'
+}
+}
+
+function useScanned(code){
+if(stream)stream.getTracks().forEach(t=>t.stop());
+
+$('#scannerModal').classList.remove('open');
+
+if(scanTarget==='register'){
+nav('products');
+openProduct();
+$('#fBarcode').value=code;
+$('#fName').focus();
+toast('Código lido! Complete o cadastro.')
+}else{
+let p=data.products.find(p=>p.barcode===code);
+
+if(p){
+addCart(p.id);
+nav('sales');
+toast('Produto adicionado ao carrinho!')
+}else{
+nav('products');
+openProduct();
+$('#fBarcode').value=code;
+toast('Código novo. Cadastre o produto.')
+}
+}
+}
+
+$('#reportDate').value=new Date().toISOString().slice(0,10);
+
+$('#reportDate').onchange=renderReports;
+
+$('#todayReport').onclick=()=>{
+$('#reportDate').value=new Date().toISOString().slice(0,10);
+renderReports()
+};
+
+$('#printStockReport').onclick=()=>printReport('stock');
+$('#printSalesReport').onclick=()=>printReport('sales');
+
+$('#useCode').onclick=()=>{
+let c=$('#manualCode').value.trim();
+if(c)useScanned(c)
+};
+
+$('#scanRegister').onclick=()=>openScanner('register');
+$('#scanSale').onclick=()=>openScanner('sale');
+$('#scanModal').onclick=()=>openScanner('register');
+
 renderAll();
-</script></body></html>
+</script>
+</body>
+</html>
